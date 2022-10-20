@@ -8,9 +8,9 @@ build-docker-cli:
 install-docker-cli:
 	go install ./cmd/docker-cli
 	@if [ $(OS_NAME) = "linux" ]; then \
-		docker-cli completion bash > /tmp/completion; \
+		docker-cli completion bash >>  ~/.bashrc; \
 	else \
-		docker-cli completion zsh > /tmp/completion; \
+		docker-cli completion zsh >> ~/.zshrc; \
 	fi
 
 test:
