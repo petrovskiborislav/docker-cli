@@ -11,11 +11,11 @@ import (
 
 	"github.com/petrovskiborislav/docker-cli/command"
 	"github.com/petrovskiborislav/docker-cli/docker"
+	"github.com/petrovskiborislav/docker-cli/logger"
 )
 
 type stopTestSuite struct {
 	suite.Suite
-	logger *mockLogger
 	client *mockClient
 	prompt *mockPrompt
 	sut    *cobra.Command
@@ -24,8 +24,7 @@ type stopTestSuite struct {
 func (s *stopTestSuite) SetupTest() {
 	s.client = &mockClient{}
 	s.prompt = &mockPrompt{}
-	s.logger = &mockLogger{}
-	s.sut = command.NewStopCommand(context.Background(), s.logger, s.prompt, s.client)
+	s.sut = command.NewStopCommand(context.Background(), logger.NewLogger(), s.prompt, s.client)
 }
 
 func TestSuite_Stop(t *testing.T) {
@@ -58,7 +57,6 @@ func (s *stopTestSuite) TestStop_WhenAllServicesSelected_ThenSuccess() {
 	s.sut.Run(nil, []string{filePath})
 
 	// Assert
-	s.logger.AssertExpectations(s.T())
 	s.prompt.AssertExpectations(s.T())
 	s.client.AssertExpectations(s.T())
 }
@@ -80,21 +78,17 @@ func (s *stopTestSuite) TestStop_WhenSingleServiceSelected_ThenSuccess() {
 	s.sut.Run(nil, []string{filePath})
 
 	// Assert
-	s.logger.AssertExpectations(s.T())
 	s.prompt.AssertExpectations(s.T())
 	s.client.AssertExpectations(s.T())
 }
 
 func (s *stopTestSuite) TestStop_WhenErrorOccursOnParsing_ThenFailure() {
 	// Arrange
-	err := errors.New("error reading YAML file: open : no such file or directory")
-	s.logger.On("Error", "Error parsing compose file: %s\n", err).Return()
 
 	// Act
 	s.sut.Run(nil, []string{""})
 
 	// Assert
-	s.logger.AssertExpectations(s.T())
 	s.prompt.AssertExpectations(s.T())
 	s.client.AssertExpectations(s.T())
 }
@@ -107,14 +101,10 @@ func (s *stopTestSuite) TestStop_WhenErrorOccursOnSelectingServices_ThenFailure(
 	matcher := mock.MatchedBy(matchElements(items))
 	s.prompt.On("SelectPrompt", msg, matcher).Return(nil, errors.New("error"))
 
-	err := errors.New("error")
-	s.logger.On("Error", "Error selecting services: %s\n", err).Return()
-
 	// Act
 	s.sut.Run(nil, []string{})
 
 	// Assert
-	s.logger.AssertExpectations(s.T())
 	s.prompt.AssertExpectations(s.T())
 	s.client.AssertExpectations(s.T())
 }
@@ -132,14 +122,10 @@ func (s *stopTestSuite) TestStop_WhenErrorOccursOnServiceProvisioning_ThenFailur
 
 	s.client.On("ServiceDecommissioning", ctx, serviceContainer).Return(errors.New("error"))
 
-	err := errors.New("error")
-	s.logger.On("Error", "Error stopping services: %s\n", err).Return()
-
 	// Act
 	s.sut.Run(nil, []string{})
 
 	// Assert
-	s.logger.AssertExpectations(s.T())
 	s.prompt.AssertExpectations(s.T())
 	s.client.AssertExpectations(s.T())
 }

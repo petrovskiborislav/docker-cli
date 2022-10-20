@@ -7,14 +7,7 @@ import (
 	"github.com/fatih/color"
 )
 
-// Logger is a wrapper around the standard logger.
-type Logger interface {
-	Info(msgFormat string, params ...interface{})
-	Warn(msgFormat string, params ...interface{})
-	Error(msgFormat string, params ...interface{})
-}
-
-type logger struct {
+type Logger struct {
 	logger     *log.Logger
 	paramColor func(a ...interface{}) string
 	infoColor  func(w io.Writer, format string, a ...interface{})
@@ -24,7 +17,7 @@ type logger struct {
 
 // NewLogger creates a new logger.
 func NewLogger() Logger {
-	return logger{
+	return Logger{
 		logger:     log.Default(),
 		paramColor: color.New(color.FgBlue).SprintFunc(),
 		infoColor:  color.New(color.FgGreen).FprintfFunc(),
@@ -34,7 +27,7 @@ func NewLogger() Logger {
 }
 
 // Info logs an info message.
-func (l logger) Info(msgFormat string, params ...interface{}) {
+func (l Logger) Info(msgFormat string, params ...interface{}) {
 	var coloredParams []interface{}
 	for _, param := range params {
 		if val, ok := param.(string); ok {
@@ -46,11 +39,11 @@ func (l logger) Info(msgFormat string, params ...interface{}) {
 }
 
 // Warn logs a warning message.
-func (l logger) Warn(msgFormat string, params ...interface{}) {
+func (l Logger) Warn(msgFormat string, params ...interface{}) {
 	l.warnColor(l.logger.Writer(), msgFormat, params...)
 }
 
 // Error logs an error message.
-func (l logger) Error(msgFormat string, params ...interface{}) {
+func (l Logger) Error(msgFormat string, params ...interface{}) {
 	l.errColor(l.logger.Writer(), msgFormat, params...)
 }
