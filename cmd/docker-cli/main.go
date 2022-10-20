@@ -30,6 +30,7 @@ func main() {
 	stopCmd := command.NewStopCommand(ctx, log, pr, dockerClient)
 
 	rootCmd := command.NewRootCommand()
+	rootCmd.CompletionOptions.HiddenDefaultCmd = true
 	rootCmd.AddCommand(startCmd, stopCmd)
 
 	if err = rootCmd.Execute(); err != nil {
