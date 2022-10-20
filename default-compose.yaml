@@ -1,0 +1,11 @@
+services:
+  nginx:
+    image: nginx:alpine
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+  cache:
+    image: memcached
+  wordpress:
+    image: wordpress:6.0
