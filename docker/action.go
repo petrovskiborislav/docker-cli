@@ -105,7 +105,7 @@ func (a actions) StopContainer(ctx context.Context, containerName string) (strin
 	}
 
 	if len(containers) == 0 {
-		return "", fmt.Errorf("container %s not found", containerName)
+		return "", nil
 	}
 
 	containerID := containers[0].ID

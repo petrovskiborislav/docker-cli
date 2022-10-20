@@ -284,7 +284,7 @@ func (s *actionsTestSuite) TestStopContainer_WhenErrorOccursOnContainerListing_T
 	s.Equal("", id)
 }
 
-func (s *actionsTestSuite) TestStopContainer_WhenNoContainersFound_ThenFailure() {
+func (s *actionsTestSuite) TestStopContainer_WhenNoContainersFound_ThenSuccess() {
 	// Arrange
 	ctx := context.Background()
 	containerName := "container"
@@ -299,7 +299,7 @@ func (s *actionsTestSuite) TestStopContainer_WhenNoContainersFound_ThenFailure()
 	id, err := s.sut.StopContainer(ctx, containerName)
 
 	// Assert
-	s.Error(err)
+	s.NoError(err)
 	s.Equal("", id)
 }
 
