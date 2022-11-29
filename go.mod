@@ -8,6 +8,7 @@ require (
 	github.com/docker/docker v20.10.19+incompatible
 	github.com/fatih/color v1.13.0
 	github.com/hinshun/vt10x v0.0.0-20220301184237-5011da428d02
+	github.com/opencontainers/image-spec v1.0.2
 	github.com/spf13/cobra v1.6.0
 	github.com/stretchr/testify v1.7.0
 	gopkg.in/AlecAivazis/survey.v1 v1.8.8
@@ -30,7 +31,6 @@ require (
 	github.com/moby/term v0.0.0-20220808134915-39b0c02b01ae // indirect
 	github.com/morikuni/aec v1.0.0 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
-	github.com/opencontainers/image-spec v1.0.2 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
